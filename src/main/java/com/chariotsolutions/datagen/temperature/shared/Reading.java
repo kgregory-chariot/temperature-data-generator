@@ -1,5 +1,7 @@
 package com.chariotsolutions.datagen.temperature.shared;
 
+import java.time.Instant;
+
 import org.apache.commons.text.StringEscapeUtils;
 
 /**
@@ -33,6 +35,15 @@ public class Reading
              + "\"temperature\": "
              + temperature
              + "}";
+    }
+    
+    
+    public String toCSV()
+    {
+        return "\"" + deviceId + "\","
+             + Instant.ofEpochMilli(timestamp)
+             + ","
+             + temperature;
     }
     
      

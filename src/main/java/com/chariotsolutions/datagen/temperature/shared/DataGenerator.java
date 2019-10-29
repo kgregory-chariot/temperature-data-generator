@@ -12,9 +12,9 @@ public class DataGenerator
 {
     private Random rnd = new Random();
     
-    private String deviceId;
-    private double normal;
-    private double stdev;
+    public final String deviceId;
+    public final double normal;
+    public final double stdev;
     
     
     public DataGenerator(String deviceId, double normal, double stdev)
