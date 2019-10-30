@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeParseException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -17,12 +16,13 @@ import java.util.NoSuchElementException;
 public class TimeRange
 implements Iterator<Long>, Iterable<Long>
 {
-    private long start;
-    private long finish;
-    private long interval;
+    final public long start;
+    final public long finish;
+    final public long interval;
+
     private long current;
 
-    
+
     /**
      *  Base constructor.
      */
@@ -33,8 +33,8 @@ implements Iterator<Long>, Iterable<Long>
         this.interval = interval;
         this.current = start;
     }
-    
-    
+
+
     /**
      *  Constructor that takes ISO-8601 timestamps. See {@link #parseTimestamp}
      *  for details.
@@ -43,8 +43,8 @@ implements Iterator<Long>, Iterable<Long>
     {
         this(parseTimestamp(start), parseTimestamp(finish), interval);
     }
-    
-    
+
+
     public static long parseTimestamp(String value)
     {
         Instant instant = null;
@@ -58,12 +58,12 @@ implements Iterator<Long>, Iterable<Long>
             OffsetDateTime parsed = OffsetDateTime.parse(value);
             instant = parsed.toInstant();
         }
-        
+
         return instant.toEpochMilli();
     }
-    
-   
-    
+
+
+
     /**
      *  Returns a copy of this range, which can then be used as an iterator
      *  (could just return itself, but then it would only be iterable once.
@@ -85,7 +85,7 @@ implements Iterator<Long>, Iterable<Long>
     {
         if (! hasNext())
             throw new NoSuchElementException("can't iterate past end of interval");
-        
+
         long value = current;
         current += interval;
         return value;

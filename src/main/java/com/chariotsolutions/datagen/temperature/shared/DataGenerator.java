@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  *  Generates readings using a normal distribution from a desired value.
@@ -11,20 +12,20 @@ import java.util.UUID;
 public class DataGenerator
 {
     private Random rnd = new Random();
-    
+
     public final String deviceId;
     public final double normal;
     public final double stdev;
-    
-    
+
+
     public DataGenerator(String deviceId, double normal, double stdev)
     {
         this.deviceId = deviceId;
         this.normal = normal;
         this.stdev = stdev;
     }
-    
-    
+
+
     /**
      *  Returns a reading using the exact timestamp provided.
      */
@@ -33,8 +34,8 @@ public class DataGenerator
         double temperature = normal + rnd.nextGaussian() * stdev;
         return new Reading(deviceId, timestamp, temperature);
     }
-    
-    
+
+
     /**
      *  Returns a reading using the timestamp, modified by the provided standard
      *  deviation (because in the real world, exact intervals don't exist).
@@ -43,8 +44,8 @@ public class DataGenerator
     {
         return next(timestamp + (long)(rnd.nextGaussian() * tsdev));
     }
-    
-    
+
+
     /**
      *  Creates multiple generators, using UUID sans dashes as the device ID.
      */
@@ -57,5 +58,14 @@ public class DataGenerator
             result.add(new DataGenerator(deviceId, normal, stdev));
         }
         return result;
+    }
+
+
+    /**
+     *  Extracts the device IDs from a list of DataGenerator objects.
+     */
+    public static List<String> extractDeviceIds(List<DataGenerator> generators)
+    {
+        return generators.stream().map(g -> g.deviceId).collect(Collectors.toList());
     }
 }
